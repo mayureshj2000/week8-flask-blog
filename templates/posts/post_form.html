@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - My Flask Blog{% endblock %}
+{% block content %}
+<h2>{{ title }}</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.title.label(class="form-label") }}
+    {{ form.title(class="form-control") }}
+    {% for error in form.title.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.content.label(class="form-label") }}
+    {{ form.content(class="form-control", rows=8) }}
+    {% for error in form.content.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <div class="form-check mb-3">
+    {{ form.published(class="form-check-input") }}
+    {{ form.published.label(class="form-check-label") }}
+  </div>
+  {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

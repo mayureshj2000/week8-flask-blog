@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Profile - My Flask Blog{% endblock %}
+{% block content %}
+<h2>{{ user.username }}'s Profile</h2>
+<p>Member since: {{ user.member_since.strftime("%b %d, %Y") }}</p>
+<p>{{ user.about_me or "No bio yet." }}</p>
+
+<h3>Your Posts</h3>
+<ul>
+  {% for post in posts %}
+    <li><a href="{{ url_for('posts.detail', post_id=post.id) }}">{{ post.title }}</a></li>
+  {% else %}
+    <li>No posts yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

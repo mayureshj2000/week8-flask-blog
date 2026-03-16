@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Home - My Flask Blog{% endblock %}
+{% block content %}
+<h1>Recent Posts</h1>
+
+<form method="post" class="mb-3">
+  {{ form.hidden_tag() }}
+  <div class="input-group">
+    {{ form.q(class="form-control", placeholder="Search posts") }}
+    <button class="btn btn-outline-secondary" type="submit">Search</button>
+  </div>
+</form>
+
+{% for post in posts %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4 class="card-title">
+        <a href="{{ url_for('posts.detail', post_id=post.id) }}">{{ post.title }}</a>
+      </h4>
+      <p class="card-text small text-muted">
+        Published {{ post.timestamp.strftime("%b %d, %Y") }} by {{ post.author.username }}
+      </p>
+      <p class="card-text">{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+    </div>
+  </div>
+{% else %}
+  <p>No posts yet.</p>
+{% endfor %}
+{% endblock %}
