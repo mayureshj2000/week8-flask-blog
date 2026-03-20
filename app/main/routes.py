@@ -4,7 +4,8 @@ from app.main import bp
 from app import db
 from app.models import Post
 from app.main.forms import SearchForm, PostForm
-
+from flask import abort
+from app.models import Post
 
 @bp.route("/", methods=["GET", "POST"])
 def index():
@@ -68,3 +69,8 @@ def new_post():
         db.session.commit()
         return redirect(url_for("main.index"))
     return render_template("main/new_post.html", form=form)
+
+@bp.route("/post/<int:post_id>")
+def post_detail(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template("main/post_detail.html", post=post)

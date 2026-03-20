@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - Post{% endblock %}
+
+{% block content %}
+  <h2>{{ post.title }}</h2>
+  <p class="text-muted small">
+    Published: {{ post.timestamp.strftime("%B %d, %Y") }}
+    | Author: {{ post.author.username }}
+  </p>
+  <hr>
+  <p>{{ post.content }}</p>
+  <hr>
+  <a href="{{ url_for('main.index') }}">← Back to home</a>
+{% endblock %}

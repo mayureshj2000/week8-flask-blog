@@ -45,7 +45,9 @@
 
   {% for post in posts %}
     <article class="mb-4">
-      <h3 class="h4">{{ post.title }}</h3>
+      <h3 class="h4">
+        <a href="{{ url_for('main.post_detail', post_id=post.id) }}">{{ post.title }}</a>
+      </h3>
       <p class="text-muted small mb-1">
         Published: {{ post.timestamp.strftime("%B %d, %Y") }}
         | Author: {{ post.author.username }}
@@ -59,7 +61,6 @@
         Comments: {{ post.comments.count() if post.comments is defined else 0 }} |
         Likes: {{ post.likes if post.likes is defined else 0 }}
       </p>
-      <hr>
     </article>
   {% else %}
     <p>No posts yet.</p>
