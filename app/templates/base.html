@@ -52,6 +52,15 @@
       </footer>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/tqojw5u9uz8ntnh4jxeyg9ouiu0y57fybikhrtdjb4ugr244/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+    <script>
+      tinymce.init({
+        selector: 'textarea#content',  // or similar
+        menubar: false,
+        plugins: 'link lists code',
+        toolbar: 'undo redo | bold italic | bullist numlist | link | code',
+      });
+    </script>
+
   </body>
 </html>
