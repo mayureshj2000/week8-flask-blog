@@ -44,7 +44,7 @@ def create_app(config_class=Config):
         db.session.rollback()
         return render_template('errors/500.html'), 500
     
-    @app.shell_context_provider
+    @app.shell_context_processor
     def make_shell_context():
         return {'db': db, 'User': User, 'Post': Post, 'Comment': Comment}
     
