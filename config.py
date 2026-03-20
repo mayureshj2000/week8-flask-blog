@@ -8,4 +8,4 @@ class Config:
     UPLOAD_FOLDER = "app/static/uploads"
     ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
     MAX_CONTENT_LENGTH = 2 * 1024 * 1024  # 2MB
-    FLASK_CREATE_DB=1 
+    FLASK_RUN_CREATE_ALL = 1
