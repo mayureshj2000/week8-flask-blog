@@ -34,8 +34,7 @@ def create_app(config_class=Config):
     app.register_blueprint(comments_bp, url_prefix='/comments')
 
     from app.models import User, Post, Comment
-    with app.app_context():
-        db.create_all()
+    db.init_app(app)
 
     @app.errorhandler(404)
     def not_found_error(error):
