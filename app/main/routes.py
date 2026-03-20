@@ -1,11 +1,10 @@
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash, current_app, abort, Response
 from flask_login import current_user, login_required
 from app.main import bp
 from app import db
 from app.models import Post
 from app.main.forms import SearchForm, PostForm, CommentForm, ContactForm
-from flask import abort, Response
-from app.models import Post, Comment, current_app
+from app.models import Post, Comment
 from werkzeug.utils import secure_filename
 import os
 
