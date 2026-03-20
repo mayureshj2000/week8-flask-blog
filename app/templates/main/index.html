@@ -1,29 +1,109 @@
 {% extends "base.html" %}
-{% block title %}Home - My Flask Blog{% endblock %}
+{% block title %}Personal Blog - Home{% endblock %}
+
 {% block content %}
-<h1>Recent Posts</h1>
-
-<form method="post" class="mb-3">
-  {{ form.hidden_tag() }}
-  <div class="input-group">
-    {{ form.q(class="form-control", placeholder="Search posts") }}
-    <button class="btn btn-outline-secondary" type="submit">Search</button>
+  <!-- Page title -->
+  <div class="mb-3">
+    <div class="page-title">Personal Blog - Home Page</div>
   </div>
-</form>
 
-{% for post in posts %}
-  <div class="card mb-3">
-    <div class="card-body">
-      <h4 class="card-title">
-        <a href="{{ url_for('posts.detail', post_id=post.id) }}">{{ post.title }}</a>
-      </h4>
-      <p class="card-text small text-muted">
-        Published {{ post.timestamp.strftime("%b %d, %Y") }} by {{ post.author.username }}
-      </p>
-      <p class="card-text">{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+  <!-- Welcome and actions -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <div class="fw-semibold">
+      👋 Welcome,
+      {% if current_user.is_authenticated %}
+        {{ current_user.username }}!
+      {% else %}
+        Guest!
+      {% endif %}
+    </div>
+    <div class="mt-2 mt-sm-0">
+      {% if current_user.is_authenticated %}
+        <a class="btn btn-sm btn-outline-primary me-2" href="{{ url_for('main.new_post') }}">New Post</a>
+        <a class="btn btn-sm btn-outline-secondary me-2" href="{{ url_for('auth.logout') }}">Logout</a>
+        <a class="btn btn-sm btn-outline-dark" href="#">Profile</a>
+      {% else %}
+        <a class="btn btn-sm btn-primary" href="{{ url_for('auth.login') }}">Login</a>
+      {% endif %}
     </div>
   </div>
-{% else %}
-  <p>No posts yet.</p>
-{% endfor %}
+
+  <!-- Search -->
+  <div class="mb-4">
+    <label class="form-label fw-semibold" for="q">🔍 Search posts</label>
+    <form method="get" class="input-group">
+      {{ form.hidden_tag() }}
+      {{ form.q(class="form-control", id="q", placeholder="Search posts") }}
+      <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+  </div>
+
+  <!-- Recent posts -->
+  <div class="section-title">📝 Recent Blog Posts</div>
+  <hr>
+
+  {% for post in posts %}
+    <article class="mb-4">
+      <h3 class="h4">{{ post.title }}</h3>
+      <p class="text-muted small mb-1">
+        Published: {{ post.timestamp.strftime("%B %d, %Y") }}
+        | Author: {{ post.author.username }}
+      </p>
+      <p class="mb-1">
+        {{ post.content[:220] }}{% if post.content|length > 220 %}...{% endif %}
+      </p>
+      <p class="text-muted small mb-0">
+        <!-- Placeholder stats; wire to real fields if you have them -->
+        Views: {{ post.views if post.views is defined else 0 }} |
+        Comments: {{ post.comments|length if post.comments is defined else 0 }} |
+        Likes: {{ post.likes if post.likes is defined else 0 }}
+      </p>
+      <hr>
+    </article>
+  {% else %}
+    <p>No posts yet.</p>
+  {% endfor %}
+
+  <!-- Example statistics + active users (static placeholders for now) -->
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="section-title">📋 Blog Statistics</div>
+      <div class="stat-box">
+        <ul class="mb-0">
+          <li>Total Posts: {{ total_posts if total_posts is defined else posts|length }}</li>
+          <li>Total Comments: {{ total_comments if total_comments is defined else 0 }}</li>
+          <li>Categories: {{ categories_count if categories_count is defined else 0 }}</li>
+          <li>Most Popular Post: {{ popular_post_title if popular_post_title is defined else "N/A" }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="section-title">👥 Active Users</div>
+      <div class="stat-box">
+        {% if active_users is defined %}
+          <ol class="mb-0">
+            {% for u in active_users %}
+              <li>{{ u.username }} ({{ u.post_count }} posts)</li>
+            {% endfor %}
+          </ol>
+        {% else %}
+          <p class="mb-0 text-muted">Active users data not available yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="section-title">📬 Subscribe to Newsletter</div>
+  <div class="stat-box">
+    <form class="row g-2">
+      <div class="col-sm-8">
+        <input type="email" class="form-control" placeholder="Enter your email">
+      </div>
+      <div class="col-sm-4">
+        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}
