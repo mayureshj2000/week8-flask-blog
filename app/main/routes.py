@@ -66,8 +66,6 @@ def new_post():
             content=form.content.data,
             author=current_user,
         )
-
-        # handle optional image
         if form.image.data:
             filename = secure_filename(form.image.data.filename)
             upload_folder = current_app.config["UPLOAD_FOLDER"]
