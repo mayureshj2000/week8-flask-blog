@@ -48,3 +48,18 @@ def register():
         flash("Registration successful. You can now log in.", "success")
         return redirect(url_for("auth.login"))
     return render_template("auth/register.html", form=form)
+
+@bp.route("/new", methods=["GET", "POST"])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(
+            title=form.title.data,
+            content=form.content.data,
+            author=current_user,
+        )
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for("main.index"))
+    return render_template("main/new_post.html", form=form)
