@@ -56,7 +56,7 @@
       <p class="text-muted small mb-0">
         <!-- Placeholder stats; wire to real fields if you have them -->
         Views: {{ post.views if post.views is defined else 0 }} |
-        Comments: {{ post.comments|length if post.comments is defined else 0 }} |
+        Comments: {{ post.comments.count() if post.comments is defined else 0 }} |
         Likes: {{ post.likes if post.likes is defined else 0 }}
       </p>
       <hr>
