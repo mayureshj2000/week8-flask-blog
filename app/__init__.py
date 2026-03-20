@@ -2,12 +2,7 @@ from flask import Flask, render_template
 from config import Config
 import os
 
-from app.extensions import db, login, migrate, bootstrap  # NEW
-from flask_login import LoginManager  # you can drop this if you use `login` only
-
-login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
-login_manager.login_message = 'Please log in to access this page.'
+from app.extensions import db, login, migrate, bootstrap
 
 
 def create_app(config_class=Config):
@@ -17,8 +12,11 @@ def create_app(config_class=Config):
     db.init_app(app)
     login.init_app(app)
     migrate.init_app(app, db)
-    login_manager.init_app(app)
     bootstrap.init_app(app)
+
+    # Configure the SAME LoginManager instance that has @login.user_loader
+    login.login_view = 'auth.login'
+    login.login_message = 'Please log in to access this page.'
 
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -35,8 +33,7 @@ def create_app(config_class=Config):
     with app.app_context():
         if os.environ.get("FLASK_RUN_CREATE_ALL") == "1":
             db.create_all()
-
-    from app.models import User, Post, Comment  # import AFTER db is ready
+        from app.models import User, Post, Comment  # ensure models (and @login.user_loader) are imported
 
     @app.errorhandler(404)
     def not_found_error(error):
