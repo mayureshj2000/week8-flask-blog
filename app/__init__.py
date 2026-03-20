@@ -15,8 +15,8 @@ bootstrap = Bootstrap()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-
     db.init_app(app)
+    login.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
     bootstrap.init_app(app)
@@ -34,7 +34,6 @@ def create_app(config_class=Config):
     app.register_blueprint(comments_bp, url_prefix='/comments')
 
     from app.models import User, Post, Comment
-    db.init_app(app)
 
     @app.errorhandler(404)
     def not_found_error(error):
