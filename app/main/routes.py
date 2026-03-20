@@ -66,6 +66,16 @@ def new_post():
             content=form.content.data,
             author=current_user,
         )
+
+        # handle optional image
+        if form.image.data:
+            filename = secure_filename(form.image.data.filename)
+            upload_folder = current_app.config["UPLOAD_FOLDER"]
+            os.makedirs(upload_folder, exist_ok=True)
+            path = os.path.join(upload_folder, filename)
+            form.image.data.save(path)
+            post.image_filename = filename
+
         db.session.add(post)
         db.session.commit()
         return redirect(url_for("main.index"))

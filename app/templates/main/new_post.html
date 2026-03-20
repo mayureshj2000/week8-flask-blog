@@ -1,15 +1,28 @@
+{% extends "base.html" %}
+
 {% block content %}
   <h2>Create New Post</h2>
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
+
     <div class="mb-3">
       {{ form.title.label(class="form-label") }}
       {{ form.title(class="form-control") }}
     </div>
+
     <div class="mb-3">
       {{ form.content.label(class="form-label") }}
       {{ form.content(class="form-control", id="editor", rows=10) }}
     </div>
+
+    {# image field, if you defined form.image #}
+    {% if form.image %}
+      <div class="mb-3">
+        {{ form.image.label(class="form-label") }}
+        {{ form.image(class="form-control") }}
+      </div>
+    {% endif %}
+
     {{ form.submit(class="btn btn-primary") }}
   </form>
 
