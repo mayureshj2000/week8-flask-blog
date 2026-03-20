@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from config import Config
 import os
+from app.models import User, Post, Comment
 
 login = LoginManager()
 db = SQLAlchemy()
@@ -35,7 +36,6 @@ def create_app(config_class=Config):
     from app.comments import bp as comments_bp
     app.register_blueprint(comments_bp, url_prefix='/comments')
 
-    from app.models import User, Post, Comment
     with app.app_context():
         if os.environ.get("FLASK_RUN_CREATE_ALL") == "1":
             db.create_all()
