@@ -17,19 +17,29 @@
 
 <hr>
 <h4>Comments</h4>
-<ul class="list-unstyled">
-  {% for comment in post.comments.filter_by(approved=True).order_by(Comment.timestamp.asc()) %}
-    <li class="mb-2">
-      <strong>{{ comment.author.username }}</strong>
-      <span class="text-muted small">
-        ({{ comment.timestamp.strftime("%b %d, %Y") }})
-      </span>
-      <div>{{ comment.content }}</div>
-    </li>
-  {% else %}
-    <li>No comments yet.</li>
-  {% endfor %}
-</ul>
+{% for c in comments %}
+  <div class="mb-2">
+    <strong>{{ c.author.username }}</strong>
+    <span class="text-muted small">{{ c.timestamp.strftime("%b %d, %Y %H:%M") }}</span>
+    <p class="mb-1">{{ c.body }}</p>
+  </div>
+{% else %}
+  <p class="text-muted">No comments yet.</p>
+{% endfor %}
+
+{% if current_user.is_authenticated %}
+  <hr>
+  <h5>Leave a comment</h5>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-2">
+      {{ form.body(class="form-control", rows=3) }}
+    </div>
+    {{ form.submit(class="btn btn-primary btn-sm") }}
+  </form>
+{% else %}
+  <p class="text-muted">Please <a href="{{ url_for('auth.login') }}">login</a> to comment.</p>
+{% endif %}
 
 {% if current_user.is_authenticated %}
   <hr>

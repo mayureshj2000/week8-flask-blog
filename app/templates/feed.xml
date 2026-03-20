@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>My Personal Blog</title>
+    <link>{{ url_for('main.index', _external=True) }}</link>
+    <description>RSS feed for My Personal Blog</description>
+    {% for post in posts %}
+    <item>
+      <title>{{ post.title }}</title>
+      <link>{{ url_for('main.post_detail', post_id=post.id, _external=True) }}</link>
+      <description><![CDATA[{{ post.content }}]]></description>
+      <pubDate>{{ post.timestamp.strftime("%a, %d %b %Y %H:%M:%S +0000") }}</pubDate>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>
